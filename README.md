@@ -1,2 +1,2 @@
-# javascript
-Javascript
+# Javascript
+Javascript excercise and samples
