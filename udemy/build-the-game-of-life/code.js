@@ -28,6 +28,7 @@ function createTable() {
             var cell = document.createElement('td');
             cell.setAttribute('id', r + '_' + c);
             cell.setAttribute('class', 'dead');
+            cell.onclick = cellClickHandler;
             tr.appendChild(cell);
 
         }
@@ -40,8 +41,17 @@ function createTable() {
 
 }
 
+function cellClickHandler() {
+
+    var classes = this.getAttribute('class');
+
+    if (classes.indexOf('live') > -1) {
+        this.setAttribute('class', 'dead');
+    } else {
+        this.setAttribute('class', 'live');
+    }
+
+}
+
 window.onload = initialize;
 
-
-
-// append grid to the grid container
