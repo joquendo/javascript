@@ -6,6 +6,9 @@ var playing = false;
 var grid = new Array(rows);
 var nextGrid = new Array(rows);
 
+var timer;
+var reproductionTime = 100;
+
 function initializeGrids() {
 
     for (var i = 0; i < rows; i++) {
@@ -32,6 +35,17 @@ function resetGrids() {
 
 }
 
+function copyAndResetGrids() {
+
+    for (var i = 0; i < rows; i++) {
+        for (var j = 0; j < cols; j++) {
+            grid[i][j] = nextGrid[i][j];
+            nextGrid[i][j] = 0;
+        }
+    }
+
+}
+
 function initialize() {
 
     createTable();
@@ -53,14 +67,14 @@ function createTable() {
     
     var table = document.createElement('table');
 
-    for (var r = 0; r < rows; r++) {
+    for (var i = 0; i < rows; i++) {
 
         var tr = document.createElement('tr');
 
-        for (var c = 0; c < cols; c++) {
+        for (var j = 0; j < cols; j++) {
 
             var cell = document.createElement('td');
-            cell.setAttribute('id', r + '_' + c);
+            cell.setAttribute('id', i + '_' + j);
             cell.setAttribute('class', 'dead');
             cell.onclick = cellClickHandler;
             tr.appendChild(cell);
@@ -97,6 +111,30 @@ function cellClickHandler() {
 
 }
 
+function updateView() {
+
+    for (var i = 0; i < rows; i++) {
+
+        for (var j = 0; j < cols; j++) {
+
+            var cell = document.getElementById(i + '_' + j);
+
+            if (grid[i][j] == 0) {
+                
+                cell.setAttribute('class', 'dead');
+
+            } else {
+
+                cell.setAttribute('class', 'live');
+
+            }
+
+        }
+
+    }
+
+}
+
 function setupControlButtons() {
 
     var startButton = document.getElementById('start');
@@ -112,6 +150,11 @@ function play() {
     console.log('play the game');
     computeNextGen();
 
+    if (playing) {
+        timer = setTimeout(play, reproductionTime);
+    }
+    
+
 }
 
 function computeNextGen() {
@@ -125,6 +168,11 @@ function computeNextGen() {
         }
 
     }
+
+    // copy nextGrid to grid and reset grid
+    copyAndResetGrids();
+    // set all 1 values to 'live' in the table
+    updateView();
 
 }
 
@@ -194,18 +242,19 @@ function countNeighbors(row, col) {
 
 function startButtonClickHandler() {
 
-    if (!playing) {
+    if (playing) {
+
+        console.log('pause the game');
+        playing = false;
+        this.innerHTML = 'continue';
+        clearTimeout(timer);
+
+    } else {
 
         console.log('continue the game');
         playing = true;
         this.innerHTML = 'pause';
         play();
-
-    } else {
-
-        console.log('pause the game');
-        playing = false;
-        this.innerHTML = 'continue';
 
     }
 
