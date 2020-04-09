@@ -301,22 +301,18 @@ function randomButtonHandler() {
 
     if (playing) return;
 
-    resetTable();
-
-    resetGrids();
+    clearButtonClickHandler();
 
     for (var i = 0; i < rows; i++) {
 
         for (var j = 0; j < cols; j++) {
 
-            var randomValue = Math.round(Math.random());
-            grid[i][j] = randomValue;
-            var cell = document.getElementById(i + '_' + j);
+            var isLive = Math.round(Math.random());
             
-            if (randomValue) {
+            if (isLive) {
+                var cell = document.getElementById(i + '_' + j);
                 cell.setAttribute('class', 'live');
-            } else {
-                cell.setAttribute('class', 'dead');
+                grid[i][j] = 1;
             }
 
         }
