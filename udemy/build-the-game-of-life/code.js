@@ -143,6 +143,9 @@ function setupControlButtons() {
     var clearButton = document.getElementById('clear');
     clearButton.onclick = clearButtonClickHandler;
 
+    var randomButton = document.getElementById('random');
+    randomButton.onclick = randomButtonHandler;
+
 }
 
 function play() {
@@ -240,6 +243,25 @@ function countNeighbors(row, col) {
     return count;
 }
 
+function resetTable() {
+
+    var cellsList = document.getElementsByClassName('live');
+    var cells = [];
+
+    for (var i = 0; i < cellsList.length; i++) {
+
+        cells.push(cellsList[i]);
+
+    }
+
+    for (var i = 0; i < cells.length; i++) {
+
+        cells[i].setAttribute('class', 'dead');
+
+    }
+
+}
+
 function startButtonClickHandler() {
 
     if (playing) {
@@ -269,22 +291,37 @@ function clearButtonClickHandler() {
 
     clearTimeout(timer);
 
-    var cellsList = document.getElementsByClassName('live');
-    var cells = [];
-
-    for (var i = 0; i < cellsList.length; i++) {
-
-        cells.push(cellsList[i]);
-
-    }
-
-    for (var i = 0; i < cells.length; i++) {
-
-        cells[i].setAttribute('class', 'dead');
-
-    }
+    resetTable();
 
     resetGrids();
+
+}
+
+function randomButtonHandler() {
+
+    if (playing) return;
+
+    resetTable();
+
+    resetGrids();
+
+    for (var i = 0; i < rows; i++) {
+
+        for (var j = 0; j < cols; j++) {
+
+            var randomValue = Math.round(Math.random());
+            grid[i][j] = randomValue;
+            var cell = document.getElementById(i + '_' + j);
+            
+            if (randomValue) {
+                cell.setAttribute('class', 'live');
+            } else {
+                cell.setAttribute('class', 'dead');
+            }
+
+        }
+
+    }
 
 }
 
