@@ -267,6 +267,25 @@ function clearButtonClickHandler() {
     var startButton = document.getElementById('start');
     startButton.innerHTML = 'start';
 
+    clearTimeout(timer);
+
+    var cellsList = document.getElementsByClassName('live');
+    var cells = [];
+
+    for (var i = 0; i < cellsList.length; i++) {
+
+        cells.push(cellsList[i]);
+
+    }
+
+    for (var i = 0; i < cells.length; i++) {
+
+        cells[i].setAttribute('class', 'dead');
+
+    }
+
+    resetGrids();
+
 }
 
 window.onload = initialize;
